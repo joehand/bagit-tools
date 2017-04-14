@@ -16,18 +16,7 @@ test('valid bags v0.97', function (t) {
       var bag = bags.shift()
       if (!bag) return t.end()
       bag = path.join(dir, bag)
-      fs.stat(bag, function (err, stat) {
-        if (err || !stat.isDirectory()) return next()
-        verify()
-      })
-
-      function verify () {
-        bagTools.verify(bag, {test: true}, function (err, valid, results) {
-          t.error(err, 'no error')
-          t.ok(valid, 'bag is valid')
-          next()
-        })
-      }
+      testBag(t, bag, {version: '0.97', test: true, valid: true}, next)
     }
   })
 })
@@ -43,21 +32,7 @@ test('invalid bags v0.97', function (t) {
       var bag = bags.shift()
       if (!bag) return t.end()
       bag = path.join(dir, bag)
-      fs.stat(bag, function (err, stat) {
-        if (err || !stat.isDirectory()) return next()
-        verify()
-      })
-
-      function verify () {
-        bagTools.verify(bag, {test: true}, function (err, valid, results) {
-          t.error(err, 'no error')
-          t.ok(!valid, `bag is invalid`)
-          if (valid) {
-            console.log(results)
-          }
-          next()
-        })
-      }
+      testBag(t, bag, {version: '0.97', test: true, valid: false}, next)
     }
   })
 })
@@ -104,18 +79,7 @@ test('valid bags v1.0', function (t) {
       var bag = bags.shift()
       if (!bag) return t.end()
       bag = path.join(dir, bag)
-      fs.stat(bag, function (err, stat) {
-        if (err || !stat.isDirectory()) return next()
-        verify()
-      })
-
-      function verify () {
-        bagTools.verify(bag, {version: '1.0', test: true}, function (err, valid, results) {
-          t.error(err, 'no error')
-          t.ok(valid, 'bag is valid')
-          next()
-        })
-      }
+      testBag(t, bag, {version: '1.0', test: true, valid: true}, next)
     }
   })
 })
@@ -131,18 +95,86 @@ test('invalid bags v1.0', function (t) {
       var bag = bags.shift()
       if (!bag) return t.end()
       bag = path.join(dir, bag)
-      fs.stat(bag, function (err, stat) {
-        if (err || !stat.isDirectory()) return next()
-        verify()
-      })
+      testBag(t, bag, {version: '1.0', test: true, valid: false}, next)
+    }
+  })
+})
 
-      function verify () {
-        bagTools.verify(bag, {version: '1.0', test: true}, function (err, valid, results) {
-          t.error(err, 'no error')
-          t.ok(!valid, `bag is invalid`)
-          next()
-        })
-      }
+function testBag (t, bag, opts, cb) {
+  fs.stat(bag, function (err, stat) {
+    if (err || !stat.isDirectory()) return cb()
+    verify()
+  })
+
+  function verify () {
+    bagTools.verify(bag, opts, function (err, valid, results) {
+      t.error(err, 'no error')
+      t.ok(opts.valid === valid, `bag is invalid`)
+      cb()
+    })
+  }
+}
+
+test('valid bags v0.96', function (t) {
+  var version = 'v0.96'
+  var dir = path.join(bagDir, version, 'valid')
+  fs.readdir(dir, function (err, bags) {
+    t.error(err, 'no error')
+    next()
+
+    function next () {
+      var bag = bags.shift()
+      if (!bag) return t.end()
+      bag = path.join(dir, bag)
+      testBag(t, bag, {version: '0.96', test: true, valid: true}, next)
+    }
+  })
+})
+
+test('valid bags v0.95', function (t) {
+  var version = 'v0.95'
+  var dir = path.join(bagDir, version, 'valid')
+  fs.readdir(dir, function (err, bags) {
+    t.error(err, 'no error')
+    next()
+
+    function next () {
+      var bag = bags.shift()
+      if (!bag) return t.end()
+      bag = path.join(dir, bag)
+      testBag(t, bag, {version: '0.95', test: true, valid: true}, next)
+    }
+  })
+})
+
+test('valid bags v0.94', function (t) {
+  var version = 'v0.94'
+  var dir = path.join(bagDir, version, 'valid')
+  fs.readdir(dir, function (err, bags) {
+    t.error(err, 'no error')
+    next()
+
+    function next () {
+      var bag = bags.shift()
+      if (!bag) return t.end()
+      bag = path.join(dir, bag)
+      testBag(t, bag, {version: '0.94', test: true, valid: true}, next)
+    }
+  })
+})
+
+test('valid bags v0.93', function (t) {
+  var version = 'v0.93'
+  var dir = path.join(bagDir, version, 'valid')
+  fs.readdir(dir, function (err, bags) {
+    t.error(err, 'no error')
+    next()
+
+    function next () {
+      var bag = bags.shift()
+      if (!bag) return t.end()
+      bag = path.join(dir, bag)
+      testBag(t, bag, {version: '0.93', test: true, valid: true}, next)
     }
   })
 })

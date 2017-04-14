@@ -35,7 +35,7 @@ Results is an array of TAP test objects for each verification step. Run against 
 
 * 1.0 - All passing
 * 0.97 - Valid/Invalid Passing, Warnings need some work
-* ... versions before 0.97 not tested
+* ... earlier version before 0.97 all valid
 
 ### Bag Fs
 
