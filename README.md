@@ -37,6 +37,23 @@ Results is an array of TAP test objects for each verification step. Run against 
 * 0.97 - Valid/Invalid Passing, Warnings need some work
 * ... versions before 0.97 not tested
 
+### Bag Fs
+
+Read and write from bags with an fs-like API via [bagit-fs](https://github.com/joehand/bagit-fs).
+
+```js
+var bagFs = require('bagit-tools').fs
+var bag = bagFs('/put/bag/here', 'sha256', {'Contact-Name': 'Joe Hand'})
+
+// write files to bag's data folder
+fs.createReadStream('readme.md').pipe(bag.createWriteStream('/readme.md'))
+
+// ... LATER after all files are written
+bag.finalize(function () {
+  console.log('finalized')
+})
+```
+
 ## Contributing
 
 Contributions welcome! Please read the [contributing guidelines](CONTRIBUTING.md) first.
