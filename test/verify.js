@@ -54,11 +54,11 @@ test('warning bags v0.97', function (t) {
       })
 
       function verify () {
-        bagTools.verify(bag, {test: true}, function (err, valid, results) {
+        bagTools.verify(bag, {objectMode: true, test: true}, function (err, valid, results) {
           t.error(err, 'no error')
           if (valid) t.ok(valid, `bag is valid`)
           else {
-            // Lol
+            // Lol, do warnings stuff
             t.skip(path.basename(bag))
           }
           next()
@@ -99,21 +99,6 @@ test('invalid bags v1.0', function (t) {
     }
   })
 })
-
-function testBag (t, bag, opts, cb) {
-  fs.stat(bag, function (err, stat) {
-    if (err || !stat.isDirectory()) return cb()
-    verify()
-  })
-
-  function verify () {
-    bagTools.verify(bag, opts, function (err, valid, results) {
-      t.error(err, 'no error')
-      t.ok(opts.valid === valid, `bag is invalid`)
-      cb()
-    })
-  }
-}
 
 test('valid bags v0.96', function (t) {
   var version = 'v0.96'
@@ -178,3 +163,19 @@ test('valid bags v0.93', function (t) {
     }
   })
 })
+
+function testBag (t, bag, opts, cb) {
+  fs.stat(bag, function (err, stat) {
+    if (err || !stat.isDirectory()) return cb()
+    verify()
+  })
+
+  function verify () {
+    opts.objectMode = true
+    bagTools.verify(bag, opts, function (err, valid, results) {
+      t.error(err, 'no error')
+      t.same(valid, opts.valid, 'validation is correct')
+      cb()
+    })
+  }
+}
